@@ -1,17 +1,17 @@
 ﻿using TimelineControl;
 using UnityEngine;
 
-public class TestTimelinePlayer : MonoBehaviour
+public class TestTimelineController : MonoBehaviour
 {
     public GameObject asset;
-    private TimelinePlayer<object> player;
+    private TimelineController<object> controller;
     public Animator cube;
     public Animator sphere;
     
     void Start()
     {
-        player = new TimelinePlayer<object>();
-        player.Init(asset, new TimelineBinderBase());
+        controller = new TimelineController<object>();
+        controller.Init(asset, new TimelineBinderBase());
     }
 
     void Update()
@@ -21,35 +21,35 @@ public class TestTimelinePlayer : MonoBehaviour
 
     private void OnGUI()
     {
-        GUILayout.Label($"{player.State}");
+        GUILayout.Label($"{controller.State}");
         
         if (GUILayout.Button("Play", GUILayout.Width(100), GUILayout.Height(100)))
         {
-            player.Play(null);
+            controller.Play(null);
         }
         
         if (GUILayout.Button("Stop", GUILayout.Width(100), GUILayout.Height(100)))
         {
-            player.Stop();
+            controller.Stop();
         }
         
         if (GUILayout.Button("BindCube", GUILayout.Width(100), GUILayout.Height(100)))
         {
-            player.Binder.Bind("_MoveTrack", cube);
+            controller.Binder.Bind("_MoveTrack", cube);
         }
         
         if (GUILayout.Button("BindSphere", GUILayout.Width(100), GUILayout.Height(100)))
         {
-            player.Binder.Bind("_MoveTrack", sphere);
+            controller.Binder.Bind("_MoveTrack", sphere);
         }
         
     }
 
     private void OnDestroy()
     {
-        if (player != null)
+        if (controller != null)
         {
-            player.Destroy();
+            controller.Destroy();
         }
     }
 }

@@ -1,13 +1,13 @@
 ﻿namespace TimelineControl
 {
-    public enum TimelinePlayerError
+    public enum TimelineControllerError
     {
         None,
         AssetIsNull,
         PlayerDirectorMissing,
     }
 
-    public enum TimePlayerState
+    public enum TimelineControllerState
     {
         None,
         Error,

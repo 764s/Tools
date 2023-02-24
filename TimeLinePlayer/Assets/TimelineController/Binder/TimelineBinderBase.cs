@@ -13,16 +13,16 @@ namespace TimelineControl
     
     public class TimelineBinderBase : ITimelineBinder
     {
-        private TimelinePlayerBase player;
+        private TimelineControllerBase controller;
         private Dictionary<string, BindEntry> dic;
-        public void Init(TimelinePlayerBase player)
+        public void Init(TimelineControllerBase controller)
         {
-            this.player = player;
+            this.controller = controller;
         }
 
         public void Bind(string streamName, Object value)
         {
-            var bindings = player.Director.playableAsset.outputs;
+            var bindings = controller.Director.playableAsset.outputs;
 
             if (dic == null) dic = new Dictionary<string, BindEntry>();
             if (!dic.TryGetValue(streamName, out var entry))
@@ -43,7 +43,7 @@ namespace TimelineControl
             ApplyBind(entry);
         }
 
-        public void ReBind()
+        public void Rebind()
         {
             if (dic == null || dic.Count == 0) return;
             
@@ -66,13 +66,13 @@ namespace TimelineControl
             
             for (var i = 0; i < entry.keyList.Count; i++)
             {
-                player.Director.SetGenericBinding(entry.keyList[i], value);
+                controller.Director.SetGenericBinding(entry.keyList[i], value);
             }
         }
 
         public void Destroy()
         {
-            player = null;
+            controller = null;
             dic?.Clear();
             
         }

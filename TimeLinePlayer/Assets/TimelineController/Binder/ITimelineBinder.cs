@@ -6,7 +6,7 @@ namespace TimelineControl
     // 事件也应该在这处理
     public interface ITimelineBinder
     {
-        void Init(TimelinePlayerBase target);
+        void Init(TimelineControllerBase target);
         void Bind(string streamName, Object value);
         void Destroy();
     }

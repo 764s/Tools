@@ -4,24 +4,24 @@ using UnityEngine.Playables;
 
 namespace TimelineControl
 {
-    public class TimelinePlayerBase
+    public class TimelineControllerBase
     {
         public GameObject GameObject { get; private set; }
         public ITimelineBinder Binder { get; private set; }
-        public TimelinePlayerError Error { get; private set; }
-        public TimePlayerState State { get; protected set; } = TimePlayerState.None;
+        public TimelineControllerError Error { get; private set; }
+        public TimelineControllerState State { get; protected set; } = TimelineControllerState.None;
         public PlayableDirector Director { get; private set; }
         
         public void Init(GameObject gameObject, ITimelineBinder binder)
         {
-            if (State != TimePlayerState.None) return;
+            if (State != TimelineControllerState.None) return;
 
-            Error = TimelinePlayerError.None;
-            State = TimePlayerState.Idle;
+            Error = TimelineControllerError.None;
+            State = TimelineControllerState.Idle;
 
             if (!gameObject)
             {
-                Error = TimelinePlayerError.AssetIsNull;
+                Error = TimelineControllerError.AssetIsNull;
                 goto EndPoint;
             }
 
@@ -31,7 +31,7 @@ namespace TimelineControl
 
             if (!this.Director)
             {
-                Error = TimelinePlayerError.PlayerDirectorMissing;
+                Error = TimelineControllerError.PlayerDirectorMissing;
                 goto EndPoint;
             }
 
@@ -48,16 +48,16 @@ namespace TimelineControl
             this.Binder?.Init(this);
 
             EndPoint:
-            if (Error != TimelinePlayerError.None)
+            if (Error != TimelineControllerError.None)
             {
-                State = TimePlayerState.Error;
+                State = TimelineControllerState.Error;
             }
         }
 
         private void OnDirectorStopInternal(PlayableDirector director)
         {
-            if (State != TimePlayerState.Playing) return;
-            State = TimePlayerState.Idle;
+            if (State != TimelineControllerState.Playing) return;
+            State = TimelineControllerState.Idle;
 
             OnDirectorStop();
         }
@@ -89,14 +89,14 @@ namespace TimelineControl
     }
     
 
-    public class TimelinePlayer<T> : TimelinePlayerBase
+    public class TimelineController<T> : TimelineControllerBase
     {
         protected T args;
 
         public void Play(T args)
         {
-            if (State != TimePlayerState.Idle) return;
-            State = TimePlayerState.Playing;
+            if (State != TimelineControllerState.Idle) return;
+            State = TimelineControllerState.Playing;
             this.args = args;
 
             Director.Play();
@@ -104,8 +104,8 @@ namespace TimelineControl
 
         public void Stop()
         {
-            if (State != TimePlayerState.Playing) return;
-            State = TimePlayerState.Idle;
+            if (State != TimelineControllerState.Playing) return;
+            State = TimelineControllerState.Idle;
             
             Director.Stop();
             OnStop();
